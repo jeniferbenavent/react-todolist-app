@@ -1,0 +1,17 @@
+
+html, body {
+  width: 60%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+:root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Nunito', sans-serif;
+  background: rgb(71,157,199);
+  background: linear-gradient(0deg, rgba(71,157,199,1) 0%, rgba(103,197,167,1) 100%);
+}
