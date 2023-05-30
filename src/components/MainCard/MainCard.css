@@ -1,0 +1,43 @@
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+  background-size: cover;
+}
+
+.card{
+  width: 600px;
+  height: 600px;
+  background-color: white;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+.card-title{
+  text-align: center;
+  padding: 5%;
+}
+
+.card-todolist{
+  padding-left: 8%;
+  padding-right: 8%;
+}
+
+.card-todolist-tasks{
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-todolist-tasks-checkbox{
+  margin-right: 40%;
+}
+
+button{
+  border: none;
+  background-color: transparent;
+}
+
+.card-todolist-tasks-div{
+  display: flex;
+}
