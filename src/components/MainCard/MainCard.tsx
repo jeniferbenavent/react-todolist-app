@@ -5,6 +5,7 @@ import './MainCard.css'
 
 function MainCard() {
   const [tasks, setTasks] = useState<string[]>([]);
+  const [checkboxStates, setCheckboxStates] = useState<boolean[]>([]);
 
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
@@ -19,10 +20,22 @@ function MainCard() {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
+  const handleCheckboxChange = (index: number) => {
+    const updatedStates = [...checkboxStates];
+    updatedStates[index] = !updatedStates[index];
+    setCheckboxStates(updatedStates);
+  };
+  
   const deleteButton = (index: number) => {
     const deleteTasks = [...tasks];
     deleteTasks.splice(index, 1);
     setTasks(deleteTasks);
+
+    // Checkboxes
+    const updatedStates = [...checkboxStates];
+    updatedStates[index] = !updatedStates[index];
+    setCheckboxStates(updatedStates);
+    
     localStorage.setItem('tasks', JSON.stringify(deleteTasks));
   };
 
@@ -37,9 +50,13 @@ function MainCard() {
               <div className='card-todolist-tasks-div'>
                 <Form.Check 
                   type="checkbox"
-                  id={`task-${index}`}
+                  id={`checkbox-${index}`}
+                  checked={checkboxStates[index] || false}
+                  onChange={() => handleCheckboxChange(index)}
                   className='card-todolist-tasks-checkbox'/>
-                  {task}
+                  <span className={checkboxStates[index] ? 'stroke' : 'none-stroke'}>
+                    { task }
+                  </span>
               </div>
               <button key={index} onClick={() => deleteButton(index)}>
                 <img src='/static/icons/trash.png' width='16px' height='16px' />

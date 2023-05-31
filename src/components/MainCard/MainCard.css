@@ -43,3 +43,12 @@ button{
 .card-todolist-tasks-div{
   display: flex;
 }
+
+.stroke{
+  text-decoration-line: line-through;
+  color: grey;
+}
+
+.none-stroke{
+  text-decoration-line: none;
+}
