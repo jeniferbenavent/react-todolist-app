@@ -7,21 +7,23 @@ function MainCard() {
   const [tasks, setTasks] = useState<string[]>([]);
 
   useEffect(() => {
-    // Cargar las tareas almacenadas en el localStorage al cargar la página
-    const storedTasks = localStorage.getItem("tasks");
-    console.log(storedTasks); //SALE VACIO AL RECARGAR
+    const storedTasks = localStorage.getItem('tasks');
     if (storedTasks) {
       setTasks(JSON.parse(storedTasks));
     }
   }, []);
 
-  useEffect(() => {
-    // Guardar las tareas en el localStorage cada vez que se actualicen
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
   const addTask = (task: string) => {
-    setTasks([...tasks, task]);
+    const updatedTasks = [...tasks, task];
+    setTasks(updatedTasks);
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  };
+
+  const deleteButton = (index: number) => {
+    const deleteTasks = [...tasks];
+    deleteTasks.splice(index, 1);
+    setTasks(deleteTasks);
+    localStorage.setItem('tasks', JSON.stringify(deleteTasks));
   };
 
   return (
@@ -37,9 +39,9 @@ function MainCard() {
                   type="checkbox"
                   id={`task-${index}`}
                   className='card-todolist-tasks-checkbox'/>
-                {task}
+                  {task}
               </div>
-              <button>
+              <button key={index} onClick={() => deleteButton(index)}>
                 <img src='/static/icons/trash.png' width='16px' height='16px' />
               </button>
             </div>
