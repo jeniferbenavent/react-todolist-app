@@ -1,42 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import AddTaskForm from '../AddTaskForm/AddTaskForm';
+import { Task } from '../../interfaces/todolist-interfaces';
 import './MainCard.css'
 
 function MainCard() {
-  const [tasks, setTasks] = useState<string[]>([]);
-  const [checkboxStates, setCheckboxStates] = useState<boolean[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
-  useEffect(() => {
-    const storedTasks = localStorage.getItem('tasks');
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
-    }
-  }, []);
+  const handleCheckboxChange = (index: number) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].isChecked = !updatedTasks[index].isChecked;
+    setTasks(updatedTasks);
+  };
 
-  const addTask = (task: string) => {
-    const updatedTasks = [...tasks, task];
+  const deleteButton = (index: number) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
     setTasks(updatedTasks);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
-  const handleCheckboxChange = (index: number) => {
-    const updatedStates = [...checkboxStates];
-    updatedStates[index] = !updatedStates[index];
-    setCheckboxStates(updatedStates);
-  };
+  const addTask = (taskText: string) => {
+    const newTask = {
+      text: taskText,
+      isChecked: false,
+    };
   
-  const deleteButton = (index: number) => {
-    const deleteTasks = [...tasks];
-    deleteTasks.splice(index, 1);
-    setTasks(deleteTasks);
-
-    // Checkboxes
-    const updatedStates = [...checkboxStates];
-    updatedStates[index] = !updatedStates[index];
-    setCheckboxStates(updatedStates);
-    
-    localStorage.setItem('tasks', JSON.stringify(deleteTasks));
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
   return (
@@ -51,11 +43,11 @@ function MainCard() {
                 <Form.Check 
                   type="checkbox"
                   id={`checkbox-${index}`}
-                  checked={checkboxStates[index] || false}
+                  checked={task.isChecked}
                   onChange={() => handleCheckboxChange(index)}
                   className='card-todolist-tasks-checkbox'/>
-                  <span className={checkboxStates[index] ? 'stroke' : 'none-stroke'}>
-                    { task }
+                  <span className={task.isChecked ? 'stroke' : 'none-stroke'}>
+                    { task.text }
                   </span>
               </div>
               <button key={index} onClick={() => deleteButton(index)}>

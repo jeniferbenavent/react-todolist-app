@@ -1,11 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { AddTaskFormProps } from '../../interfaces/todolist-interfaces';
 import './AddTaskForm.css'
-
-
-interface AddTaskFormProps {
-  addTask: (task: string) => void;
-}
 
 function AddTaskForm({ addTask }: AddTaskFormProps): JSX.Element {
   const [newTask, setNewTask] = useState("");
