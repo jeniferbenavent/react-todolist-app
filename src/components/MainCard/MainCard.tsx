@@ -1,111 +1,38 @@
-import { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { useToDoList } from '../../hooks/useToDoList';
 import AddTaskForm from '../AddTaskForm/AddTaskForm';
-import { Task } from '../../interfaces/todolist-interfaces';
-import './MainCard.css'
+import Task from '../Task/Task';
+import './MainCard.css';
 
 function MainCard() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    const storedTasks = localStorage.getItem('tasks');
-    if (storedTasks) {
-      setTasks(JSON.parse(storedTasks));
-    }
-  }, []);
-  
-  const addTask = (taskText: string) => {
-    const newTask = {
-      text: taskText,
-      isChecked: false,
-    };
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-  };
-
-  const handleCheckboxChange = (index: number) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].isChecked = !updatedTasks[index].isChecked;
-     // Desactivar el modo de edición al marcar una tarea como completada
-    setEditIndex(null);
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-  };
-
-  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>, index: number) => {
-
-    const updatedTasks = [...tasks];
-    updatedTasks[index].text = e.target.value;
-    setTasks(updatedTasks);
-  }
-
-  const editButton = (index: number) => {
-    setEditIndex(index);
-  };
-
-  const checkButton = () => {
-    setEditIndex(null);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  };
-
-  const deleteButton = (index: number) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-  };
+  const {addTask} = useToDoList();
 
   return (
-    <section className='card-container'>
-      <div className='card'>
-        <h1 className='card-title'>To Do List</h1>
-        <AddTaskForm addTask={addTask} />
-        <div className='card-todolist'>
-        {tasks.map((task, index) => (
-          <div key={index} className='card-todolist-tasks'>
-            <div className='card-todolist-tasks-div'>
-              <Form.Check
-                type="checkbox"
-                id={`checkbox-${index}`}
-                checked={task.isChecked}
-                onChange={() => handleCheckboxChange(index)}
-                className='card-todolist-tasks-checkbox'
-              />
-              {editIndex === index ? (
-                <div>
-                  <input
-                    type="text"
-                    value={task.text}
-                    onChange={(e) => handleInputChange(e, index)}
-                  />
-                  <button
-                    onClick={() => checkButton()}
-                  >
-                    <img src='/static/icons/cheque.png' width='15px' height='15px' />
-                  </button>
-                </div>
-              ) : (
-                <span className={task.isChecked ? 'stroke' : 'none-stroke'}>
-                  {task.text}
-                </span>
-              )}
-            </div>
-            <div className='card-todolist-tasks-editdelete'>
-              <button onClick={() => editButton(index)}>
-                <img src='/static/icons/pencil.png' width='15px' height='15px' />
-              </button>
-              <button onClick={() => deleteButton(index)}>
-                <img src='/static/icons/cross-small.png' width='18px' height='18px' />
-              </button>
-            </div>
+
+    <div className="flex flex-col justify-center items-center h-[100vh]">
+      <div className="!z-5 relative flex flex-col rounded-[20px] max-w-[300px] bg-white bg-clip-border shadow-3xl shadow-shadow-500 flex flex-col w-full !p-4 3xl:p-![18px] bg-white undefined">
+          {/* TITLE */}
+      <div className="relative flex flex-row justify-between">
+          <div class="flex items-center">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-100 dark:bg-white/5">
+            <span class="material-symbols-rounded h-6 w-6 text-brand-500 dark:text-white">
+                  check_circle
+              </span>  
           </div>
-        ))}
-        </div>
-      </div> 
-    </section>
+          <h4 class="ml-4 text-xl font-bold text-navy-700 dark:text-white">
+              Tasks
+          </h4>
+          </div>
+          <button 
+          class='flex items-center text-xl hover:cursor-pointer bg-lightPrimary p-2 text-brand-500 hover:bg-gray-100 dark:bg-navy-700 dark:text-white dark:hover:bg-white/20 dark:active:bg-white/10 rounded-lg'
+          >
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" class="h-6 w-6" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path></svg>
+          </button>
+      </div>
+      <AddTaskForm addTask={addTask} />
+      <Task />
+      </div>
+    </div>
   );
 }
 
-export default MainCard
+export default MainCard;

@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, Form, InputGroup } from 'react-bootstrap';
 import { AddTaskFormProps } from '../../interfaces/todolist-interfaces';
 import './AddTaskForm.css'
 
@@ -20,15 +19,15 @@ function AddTaskForm({ addTask }: AddTaskFormProps): JSX.Element {
 
   return (
     <form onSubmit={handleSubmit}>
-      <InputGroup className="mb-3">
-        <Form.Control 
+      <div className="mb-3 p-8">
+        <input 
           placeholder="Write a task" 
           value={newTask}
           onChange={handleInputChange}/>
-        <Button variant="primary" id="button-addon2" type="submit">
+        <button type="submit">
           Add
-        </Button>
-      </InputGroup>
+        </button>
+      </div>
     </form>
   );
 }
