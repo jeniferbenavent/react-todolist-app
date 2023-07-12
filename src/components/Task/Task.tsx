@@ -12,17 +12,17 @@ function Task() {
     deleteButton,
   } = useToDoList();
 
-  return(
+  return (
     <div className='flex justify-between mt-3 mb-3'>
       {tasks.map((task, index) => (
         <div key={index} className='flex'>
           <div>
-            <Form.Check
-              type='checkbox'
-              id={`checkbox-${index}`}
-              checked={task.isChecked}
-              onChange={() => handleCheckboxChange(index)}
-              className='card-todolist-tasks-checkbox'
+            <input
+              type="checkbox"
+              className="defaultCheckbox relative flex h-[20px] min-h-[20px] w-[20px] min-w-[20px] appearance-none items-center 
+                        justify-center rounded-md border border-gray-300 text-white/0 outline-none transition duration-[0.2s]
+                          checked:border-none checked:text-white hover:cursor-pointer dark:border-white/10 checked:bg-brand-500 dark:checked:bg-brand-400"
+              name="weekly"
             />
             {editIndex === index ? (
               <div>
@@ -37,7 +37,9 @@ function Task() {
               </div>
             ) : (
               <span className={task.isChecked ? 'line-through text-gray-500' : 'no-underline'}>
-                {task.text}
+                <p className="text-base font-bold text-navy-700 dark:text-white">
+                  {task.text}
+                </p>
               </span>
             )}
           </div>
