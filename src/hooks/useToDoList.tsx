@@ -1,9 +1,10 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Task } from '../interfaces/todolist-interfaces';
 
 export function useToDoList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [newTask, setNewTask] = useState("");
 
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
@@ -12,7 +13,7 @@ export function useToDoList() {
     }
   }, []);
 
-  const addTask = (taskText: any) => {
+  const handleAddTask = (taskText: any) => {
     const newTask = {
       text: taskText,
       isChecked: false,
@@ -51,13 +52,27 @@ export function useToDoList() {
     setTasks(updatedTasks);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
+  
+  const handleAddTaskChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNewTask(event.target.value);
+  };
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (newTask.trim() !== "") {
+      handleAddTask(newTask);
+      setNewTask("");
+    }
+  };
   return {
     tasks,
     editIndex,
-    addTask,
+    newTask,
+    handleAddTask,
     handleCheckboxChange,
     handleInputChange,
+    handleAddTaskChange,
+    handleSubmit,
     editButton,
     checkButton,
     deleteButton,
